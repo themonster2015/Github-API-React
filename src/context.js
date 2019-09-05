@@ -10,6 +10,12 @@ const reducer = (state, action) => {
         info: action.payload,
         username: action.payload.login
       };
+    case "ERROR":
+      return {
+        ...state,
+        error: action.payload,
+        info: null
+      };
     default:
       return state;
   }
@@ -24,13 +30,16 @@ export class Provider extends React.Component {
   };
   componentDidMount() {
     axios
-      .get(`http://api.github.com/repos/themonster2015/2015lab1/topics`, {
+      .get(`https://api.github.com/users/themonster2015`, {
         headers: {
           "content-type": "application/vnd.github.mercy-preview+json"
         }
       })
       .then(res => {
         console.log(res.data);
+        this.setState(state =>
+          reducer(state, { type: "SEARCH_USER", payload: res.data })
+        );
       })
       .catch(err => console.log(err));
   }

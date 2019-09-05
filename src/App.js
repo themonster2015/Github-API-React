@@ -2,12 +2,25 @@ import React from "react";
 import "./App.css";
 import Navbar from "./components/layouts/Navbar";
 import Search from "./components/Search";
+import UserDisplay from "./components/UserDisplay";
+import { Provider, Consumer } from "./context";
 function App() {
   return (
-    <div className="App">
-      <Navbar />
-      <Search />
-    </div>
+    <Provider>
+      <Consumer>
+        {value => {
+          console.log(value.info);
+
+          return (
+            <div className="App">
+              <Navbar />
+              <Search />
+              <UserDisplay />
+            </div>
+          );
+        }}
+      </Consumer>
+    </Provider>
   );
 }
 
