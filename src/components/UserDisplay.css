@@ -1,4 +1,4 @@
-div.user-profile-grid {
+.user-profile-grid {
   margin: 52px;
   display: grid;
   grid-template-columns: 1fr 2fr;
@@ -155,7 +155,8 @@ a.btn-visit:hover {
 }
 @media only screen and (max-width: 450px) {
   div.user-profile-grid {
-    margin: 52px 20px 20px 20px;
+    display: flex;
+    flex-direction: column;
   }
   div.data-wrapper ul li h3 {
     font-size: 16px;
