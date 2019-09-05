@@ -12,7 +12,7 @@ class Search extends Component {
   findUser = (dispatch, e) => {
     e.preventDefault();
     axios
-      .get(`http://api.github.com/users/${this.state.username}`)
+      .get(`https://api.github.com/users/${this.state.username}`)
       .then(res => {
         dispatch({
           type: "SEARCH_USER",
