@@ -1,13 +1,3 @@
-div.loading-user-card {
-  margin-top: 40px;
-  grid-row: 3/4;
-  grid-column: 1 / 4;
-}
-
-.user-profile {
-  grid-row: 3/4;
-  grid-column: 1 / 4;
-}
 div.user-profile-grid {
   margin: 52px;
   display: grid;
@@ -25,7 +15,7 @@ div.user-bio p {
   font-size: 16px;
   font-family: unset;
 }
-div.user-img {
+.user-img {
   grid-row: 1/4;
   grid-column: 1 / 2;
 }
@@ -39,10 +29,7 @@ h1.user-name {
   flex: 1;
   text-align: left;
 }
-a.btn-visit {
-  flex: 2;
-  /* width: 50px; */
-}
+
 div.user-stats {
   grid-row: 2 / 3;
   grid-column: 2 / 3;

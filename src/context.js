@@ -8,7 +8,25 @@ const reducer = (state, action) => {
       return {
         ...state,
         info: action.payload,
-        username: action.payload.login
+        username: action.payload.login,
+        following: null,
+        followers: null,
+        repos: null
+      };
+    case "FOLLOWING":
+      return {
+        ...state,
+        following: action.payload
+      };
+    case "FOLLOWERS":
+      return {
+        ...state,
+        followers: action.payload
+      };
+    case "REPOS":
+      return {
+        ...state,
+        repos: action.payload
       };
     case "ERROR":
       return {
@@ -24,8 +42,10 @@ export class Provider extends React.Component {
   state = {
     username: "",
     info: null,
-    loading: false,
     error: "",
+    repos: null,
+    following: null,
+    followers: null,
     dispatch: action => this.setState(state => reducer(state, action))
   };
   componentDidMount() {
@@ -36,7 +56,6 @@ export class Provider extends React.Component {
         }
       })
       .then(res => {
-        console.log(res.data);
         this.setState(state =>
           reducer(state, { type: "SEARCH_USER", payload: res.data })
         );

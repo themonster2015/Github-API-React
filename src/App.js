@@ -9,8 +9,6 @@ function App() {
     <Provider>
       <Consumer>
         {value => {
-          console.log(value.info);
-
           return (
             <div className="App">
               <Navbar />

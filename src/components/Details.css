@@ -1,0 +1,30 @@
+div.user-data-loading {
+  grid-row: 6/7;
+  grid-column: 2 / 3;
+
+  position: relative;
+  margin: 30px 0 0 80px;
+  width: 14px;
+  height: 14px;
+}
+.detail_listings {
+  grid-row: 3 / 12;
+  grid-column: 2 / 3;
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  text-align: left !important;
+}
+.repos-list {
+  display: flex;
+  justify-content: space-between;
+}
+.follow-list {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+.user-data-img {
+  width: 100px;
+  border-radius: 50px;
+}

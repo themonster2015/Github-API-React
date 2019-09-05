@@ -12,11 +12,7 @@ class Search extends Component {
   findUser = (dispatch, e) => {
     e.preventDefault();
     axios
-      .get(`http://api.github.com/users/${this.state.username}`, {
-        headers: {
-          "content-type": "application/vnd.github.mercy-preview+json"
-        }
-      })
+      .get(`http://api.github.com/users/${this.state.username}`)
       .then(res => {
         dispatch({
           type: "SEARCH_USER",
@@ -37,7 +33,7 @@ class Search extends Component {
         {value => {
           return (
             <div className="card card-body mb-4 p-4">
-              <h1 className="display-4 text-center">
+              <h1 className="display-5 text-center">
                 <i className="fa fa-github" /> Enter a Github Username to Search
               </h1>
               <form onSubmit={this.findUser.bind(this, value.dispatch)}>

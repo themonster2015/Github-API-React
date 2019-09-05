@@ -2,6 +2,9 @@ import React from "react";
 import "./UserDisplay.css";
 import { Consumer } from "../context";
 import Loading from "./Loading";
+import Details from "./Details";
+import axios from "axios";
+import Moment from "react-moment";
 class UserDisplay extends React.Component {
   constructor(props) {
     super(props);
@@ -9,29 +12,44 @@ class UserDisplay extends React.Component {
       data: "",
       display_data: false
     };
+    this.getUserData = this.getUserData.bind(this);
   }
-  getUserData = (event, data) => {
-    this.setState({
-      display_data: false
-    });
+  getUserData = (dispatch, e, data, type) => {
     setTimeout(() => {
-      this.setState({
-        data: data,
-        display_data: true
-      });
+      axios
+        .get(`${data}`)
+        .then(res => {
+          dispatch({
+            type: type,
+            payload: res.data
+          });
+        })
+        .then(res =>
+          this.setState({
+            display_data: true,
+            data: type
+          })
+        )
+        .catch(err => {
+          console.log(err);
+          dispatch({
+            type: "ERROR",
+            payload: "Error retrieving info."
+          });
+        });
     }, 500);
   };
 
   render() {
-    // let user_data = "";
-    // if (this.state.data && this.state.display_data) {
-    //   user_data = <UserData data={this.state.data} />;
-    // }
-
+    let user_data = "";
+    if (this.state.data && this.state.display_data) {
+      user_data = <Details data={this.state.data} />;
+    }
     return (
       <Consumer>
         {value => {
-          console.log(value.info === null);
+          this.getUserData.bind(this, value.dispatch);
+
           if (value.info !== null) {
             return (
               <div className="user-profile">
@@ -58,8 +76,13 @@ class UserDisplay extends React.Component {
                     <ul>
                       <li
                         className="user-following"
-                        onClick={event =>
-                          this.getUserData(event, `${value.info.url}/following`)
+                        onClick={e =>
+                          this.getUserData(
+                            value.dispatch,
+                            e,
+                            `${value.info.url}/following`,
+                            "FOLLOWING"
+                          )
                         }
                       >
                         <b>{value.info.following}</b>
@@ -67,8 +90,13 @@ class UserDisplay extends React.Component {
                       </li>
                       <li
                         className="user-followers"
-                        onClick={event =>
-                          this.getUserData(event, `${value.info.url}/followers`)
+                        onClick={e =>
+                          this.getUserData(
+                            value.dispatch,
+                            e,
+                            `${value.info.url}/followers`,
+                            "FOLLOWERS"
+                          )
                         }
                       >
                         <b>{value.info.followers}</b>
@@ -76,18 +104,30 @@ class UserDisplay extends React.Component {
                       </li>
                       <li
                         className="user-repos"
-                        onClick={event =>
-                          this.getUserData(event, `${value.info.url}/repos`)
+                        onClick={e =>
+                          this.getUserData(
+                            value.dispatch,
+                            e,
+                            `${value.info.url}/repos`,
+                            "REPOS"
+                          )
                         }
                       >
                         <b>{value.info.public_repos}</b>
                         <p>Repos</p>
                       </li>
+                      <li className="user-repos">
+                        <b>Joined</b>
+                        <p>
+                          <Moment from={new Date()}>
+                            {value.info.created_at}
+                          </Moment>
+                        </p>
+                      </li>
                     </ul>
                   </div>
 
-                  {/* {user_data} */}
-                  <Loading />
+                  {user_data}
                 </div>
               </div>
             );
