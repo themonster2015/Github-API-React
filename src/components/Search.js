@@ -1,0 +1,68 @@
+import React, { Component } from "react";
+import { Consumer, Provider } from "../context";
+import axios from "axios";
+
+class Search extends Component {
+  state = {
+    username: ""
+  };
+  onChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
+  findUser = (dispatch, e) => {
+    e.preventDefault();
+    axios
+      .get(`http://api.github.com/users/${this.state.username}`, {
+        headers: {
+          "content-type": "application/vnd.github.mercy-preview+json"
+        }
+      })
+      .then(res => {
+        console.log(res.data);
+        dispatch({
+          type: "SEARCH_USER",
+          payload: res.data
+        });
+      })
+      .catch(err => console.log(err));
+  };
+  render() {
+    return (
+      <Provider>
+        <Consumer>
+          {value => {
+            console.log(value);
+            return (
+              <div className="card card-body mb-4 p-4">
+                <h1 className="display-4 text-center">
+                  <i className="fa fa-github" /> Enter a Github Username to
+                  Search
+                </h1>
+                <form onSubmit={this.findUser.bind(this, value.dispatch)}>
+                  <div className="form-group">
+                    <input
+                      type="text"
+                      className="form-control form-control-lg"
+                      placeholder="Github username..."
+                      name="username"
+                      value={this.state.username}
+                      onChange={this.onChange}
+                    />
+                  </div>
+                  <button
+                    className="btn btn-primary btn-lg btn-block mb-5"
+                    type="submit"
+                  >
+                    Get User's Info
+                  </button>
+                </form>
+              </div>
+            );
+          }}
+        </Consumer>
+      </Provider>
+    );
+  }
+}
+
+export default Search;
