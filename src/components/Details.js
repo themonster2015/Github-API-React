@@ -2,7 +2,6 @@ import React from "react";
 import Loading from "./Loading";
 import { Consumer } from "../context";
 import "./Details.css";
-import axios from "axios";
 class Details extends React.Component {
   constructor(props) {
     super(props);

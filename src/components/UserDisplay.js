@@ -1,7 +1,6 @@
 import React from "react";
 import "./UserDisplay.css";
 import { Consumer } from "../context";
-import Loading from "./Loading";
 import Details from "./Details";
 import axios from "axios";
 import Moment from "react-moment";
