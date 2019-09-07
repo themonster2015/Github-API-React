@@ -11,22 +11,25 @@ const reducer = (state, action) => {
         username: action.payload.login,
         following: null,
         followers: null,
-        repos: null
+        public_repos: null
       };
     case "FOLLOWING":
       return {
         ...state,
+        // following: [...(state.following || []), ...(action.payload || [])]
         following: action.payload
       };
     case "FOLLOWERS":
       return {
         ...state,
+        // followers: [...(state.followers || []), ...(action.payload || [])]
         followers: action.payload
       };
-    case "REPOS":
+    case "PUBLIC_REPOS":
       return {
         ...state,
-        repos: action.payload
+        public_repos: action.payload
+        // public_repos: [...(state.public_repos || []), ...(action.payload || [])]
       };
     case "ERROR":
       return {
@@ -43,9 +46,9 @@ export class Provider extends React.Component {
     username: "",
     info: null,
     error: "",
-    repos: null,
-    following: null,
-    followers: null,
+    public_repos: [],
+    following: [],
+    followers: [],
     dispatch: action => this.setState(state => reducer(state, action))
   };
   componentDidMount() {

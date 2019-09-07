@@ -1,3 +1,6 @@
+.user-profile {
+  width: 100%;
+}
 .user-profile-grid {
   margin: 52px;
   display: grid;
@@ -132,7 +135,8 @@ a.btn-visit:hover {
     justify-content: space-around;
   }
   div.user-bio {
-    grid-column: 1 / 4;
+    grid-column: 2/ 3;
+    grid-row: 3/4;
   }
   div.profile-user-settings {
     grid-row: 1 / 2;

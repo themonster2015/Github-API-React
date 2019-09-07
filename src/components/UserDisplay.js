@@ -4,29 +4,74 @@ import { Consumer } from "../context";
 import Details from "./Details";
 import axios from "axios";
 import Moment from "react-moment";
+import InfiniteScroll from "react-infinite-scroll-component";
+import Loading from "./Loading";
 class UserDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      infiniteData: [],
       data: "",
+      hasMore: true,
+      nextPage: 2,
+      url: null,
       display_data: false
     };
-    this.getUserData = this.getUserData.bind(this);
   }
   getUserData = (dispatch, e, data, type) => {
-    setTimeout(() => {
+    axios
+      .get(`${data}`)
+      .then(res => {
+        this.setState({
+          display_data: true,
+          hasMore: true,
+          data: type,
+          url: data,
+          infiniteData: res.data
+        });
+      })
+      .then(() => {
+        dispatch({
+          type: type,
+          payload: this.state.infiniteData
+        });
+      })
+
+      .catch(err => {
+        console.log(err);
+        dispatch({
+          type: "ERROR",
+          payload: "Error retrieving info."
+        });
+      });
+  };
+
+  // infinite scrolling
+  loadMore = dispatch => {
+    if (this.state.hasMore === true) {
+      let num = this.state.nextPage;
       axios
-        .get(`${data}`)
+        .get(`${this.state.url}?page=${num}`)
         .then(res => {
-          dispatch({
-            type: type,
-            payload: res.data
-          });
+          console.log(res.data);
+          if (res.data.length > 0) {
+            this.setState({
+              hasMore: true,
+              nextPage: num + 1,
+              infiniteData: [...this.state.infiniteData, ...res.data]
+            });
+          } else {
+            this.setState({
+              hasMore: false,
+              nextPage: 2
+            });
+          }
+          return res;
         })
         .then(res =>
-          this.setState({
-            display_data: true,
-            data: type
+          dispatch({
+            type: this.state.data,
+            payload: this.state.infiniteData
           })
         )
         .catch(err => {
@@ -36,7 +81,7 @@ class UserDisplay extends React.Component {
             payload: "Error retrieving info."
           });
         });
-    }, 500);
+    }
   };
 
   render() {
@@ -48,7 +93,7 @@ class UserDisplay extends React.Component {
       <Consumer>
         {value => {
           this.getUserData.bind(this, value.dispatch);
-
+          this.loadMore.bind(this, value.dispatch);
           if (value.info !== null) {
             return (
               <div className="user-profile">
@@ -108,7 +153,7 @@ class UserDisplay extends React.Component {
                             value.dispatch,
                             e,
                             `${value.info.url}/repos`,
-                            "REPOS"
+                            "PUBLIC_REPOS"
                           )
                         }
                       >
@@ -125,8 +170,29 @@ class UserDisplay extends React.Component {
                       </li>
                     </ul>
                   </div>
-
-                  {user_data}
+                  {user_data ? (
+                    // <InfiniteScroller
+                    //   infiniteData={this.state.infiniteData}
+                    //   hasMore={this.state.hasMore}
+                    //   loadMore={this.loadMore(value.dispatch)}
+                    //   user_data={user_data}
+                    // />
+                    <InfiniteScroll
+                      // dataLength={value.info[dataLength]}
+                      dataLength={this.state.infiniteData.length}
+                      next={this.loadMore(value.dispatch)}
+                      hasMore={this.state.hasMore}
+                      loader={
+                        <div>
+                          <Loading />
+                        </div>
+                      }
+                    >
+                      {user_data}
+                    </InfiniteScroll>
+                  ) : (
+                    ""
+                  )}
                 </div>
               </div>
             );
