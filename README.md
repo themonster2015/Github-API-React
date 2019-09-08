@@ -8,13 +8,15 @@ This is an app built with React that serves the purpose of fetching data from Gi
 
 The project can be viewed and tested at this link [React Github API App](https://young-badlands-55613.herokuapp.com/)
 
+![Github API Search Demo](github-api.gif)
+
 ## Available Scripts
 
 To run this project in your local machine, follow the following steps:
 
 ### `git clone git@github.com:themonster2015/Github-API-React.git`
 
-To clone the repository to your local drive.<br>
+To clone the repository to your local drive.<br>![Farmers Market Finder Demo](demo/demo.gif)
 
 ### `cd Github-API-React`
 

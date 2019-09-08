@@ -11,11 +11,3 @@ it("calls findUser function when form is submitted", () => {
   form.simulate("submit");
   expect(onSubmitFn).toHaveBeenCalledTimes(1);
 });
-test("UserGreeter salutes an anonymous user", () => {
-  const { getByText } = render(
-    <Consumer>
-      <Search />
-    </Consumer>
-  );
-  expect(getByText("Hello stranger!")).toBeInTheDocument();
-});
