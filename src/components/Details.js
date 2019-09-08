@@ -37,7 +37,7 @@ function UserReposList(props) {
                 {full_name}
               </a>
             </h3>
-            <div className="user-repos-stars">
+            <div>
               <i className="fa fa-star"></i>
               {stargazers_count}
             </div>

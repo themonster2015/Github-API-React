@@ -8,7 +8,7 @@ This is an app built with React that serves the purpose of fetching data from Gi
 
 The project can be viewed and tested at this link [React Github API App](https://young-badlands-55613.herokuapp.com/)
 
-![Github API Search Demo](github-api.gif)
+![Github API Search Demo](captured.gif)
 
 ## Available Scripts
 
