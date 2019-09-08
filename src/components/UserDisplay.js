@@ -13,6 +13,7 @@ class UserDisplay extends React.Component {
   }
 
   getURL = (event, data, dispatch) => {
+    event.preventDefault();
     this.setState({
       display_data: false
     });
