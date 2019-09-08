@@ -29,7 +29,7 @@ export default Details;
 function UserReposList(props) {
   if (props.data) {
     return (
-      <ul className="detail_listings">
+      <ul className="repos-ul">
         {props.data.map(({ id, full_name, stargazers_count, html_url }) => (
           <li key={id} className="repos-list">
             <h3>
@@ -55,7 +55,11 @@ function UserFollowList(props) {
       <ul className="detail_listings">
         {props.data.map(({ id, login, avatar_url, html_url }, idx) => (
           <li key={idx} className="follow-list">
-            <img className="user-data-img" src={avatar_url} alt="" />
+            <img
+              className="img-responsive user-data-img"
+              src={avatar_url}
+              alt=""
+            />
             <h3>
               <a className="user-data-login" href={html_url}>
                 {login}

@@ -2,6 +2,7 @@ import React from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import Loading from "./Loading";
 import Details from "./Details";
+import "./InfiniteScroller.css";
 export default class InfiniteScroller extends React.Component {
   constructor(props) {
     super(props);
@@ -86,20 +87,17 @@ export default class InfiniteScroller extends React.Component {
     return (
       <div className="user-data-grid">
         <InfiniteScroll
+          className="col-md-6 offset-md-3 col-xs-12"
           dataLength={this.state.data.length}
           next={this.fetchMoreData}
           hasMore={this.state.hasMore}
           loader={
-            <div className="user-data-scrolling-loading">
+            <div>
               <Loading />
             </div>
           }
         >
-          {this.state.loading ? (
-            <Loading />
-          ) : (
-            <div className="data-wrapper">{user_data_list}</div>
-          )}
+          {this.state.loading ? <Loading /> : <div>{user_data_list}</div>}
         </InfiniteScroll>
       </div>
     );
