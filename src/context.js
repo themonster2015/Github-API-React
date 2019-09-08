@@ -13,24 +13,21 @@ const reducer = (state, action) => {
         followers: null,
         public_repos: null
       };
-    case "FOLLOWING":
-      return {
-        ...state,
-        // following: [...(state.following || []), ...(action.payload || [])]
-        following: action.payload
-      };
-    case "FOLLOWERS":
-      return {
-        ...state,
-        // followers: [...(state.followers || []), ...(action.payload || [])]
-        followers: action.payload
-      };
-    case "PUBLIC_REPOS":
-      return {
-        ...state,
-        public_repos: action.payload
-        // public_repos: [...(state.public_repos || []), ...(action.payload || [])]
-      };
+    // case "FOLLOWING":
+    //   return {
+    //     ...state,
+    //     following: action.payload
+    //   };
+    // case "FOLLOWERS":
+    //   return {
+    //     ...state,
+    //     followers: action.payload
+    //   };
+    // case "PUBLIC_REPOS":
+    //   return {
+    //     ...state,
+    //     public_repos: action.payload
+    //   };
     case "SET_URL":
       return {
         ...state,
@@ -52,9 +49,6 @@ export class Provider extends React.Component {
     username: "",
     info: null,
     error: "",
-    public_repos: [],
-    following: [],
-    followers: [],
     url: "",
     dispatch: action => this.setState(state => reducer(state, action))
   };

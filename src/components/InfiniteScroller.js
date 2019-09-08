@@ -85,7 +85,7 @@ export default class InfiniteScroller extends React.Component {
     }
     console.log("user-data-list", user_data_list);
     return (
-      <div className="user-data-grid">
+      <div>
         <InfiniteScroll
           className="col-md-6 offset-md-3 col-xs-12"
           dataLength={this.state.data.length}
