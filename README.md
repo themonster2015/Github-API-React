@@ -16,7 +16,7 @@ To run this project in your local machine, follow the following steps:
 
 ### `git clone git@github.com:themonster2015/Github-API-React.git`
 
-To clone the repository to your local drive.<br>![Farmers Market Finder Demo](demo/demo.gif)
+To clone the repository to your local drive.<br>
 
 ### `cd Github-API-React`
 
