@@ -1,102 +1,45 @@
 import React from "react";
 import "./UserDisplay.css";
 import { Consumer } from "../context";
-import Details from "./Details";
-import axios from "axios";
 import Moment from "react-moment";
-import InfiniteScroll from "react-infinite-scroll-component";
-import Loading from "./Loading";
+import InfiniteScroller from "./InfiniteScroller";
 class UserDisplay extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      infiniteData: [],
       data: "",
-      hasMore: true,
-      nextPage: 2,
-      url: null,
       display_data: false
     };
   }
-  getUserData = (dispatch, e, data, type) => {
-    axios
-      .get(`${data}`)
-      .then(res => {
-        this.setState({
-          display_data: true,
-          hasMore: true,
-          data: type,
-          url: data,
-          infiniteData: res.data
-        });
-      })
-      .then(() => {
-        dispatch({
-          type: type,
-          payload: this.state.infiniteData
-        });
-      })
 
-      .catch(err => {
-        console.log(err);
-        dispatch({
-          type: "ERROR",
-          payload: "Error retrieving info."
-        });
+  getURL = (event, data, dispatch) => {
+    this.setState({
+      display_data: false
+    });
+    setTimeout(() => {
+      this.setState({
+        data: data,
+        display_data: true
       });
-  };
-
-  // infinite scrolling
-  loadMore = dispatch => {
-    if (this.state.hasMore === true) {
-      let num = this.state.nextPage;
-      axios
-        .get(`${this.state.url}?page=${num}`)
-        .then(res => {
-          console.log(res.data);
-          if (res.data.length > 0) {
-            this.setState({
-              hasMore: true,
-              nextPage: num + 1,
-              infiniteData: [...this.state.infiniteData, ...res.data]
-            });
-          } else {
-            this.setState({
-              hasMore: false,
-              nextPage: 2
-            });
-          }
-          return res;
-        })
-        .then(res =>
-          dispatch({
-            type: this.state.data,
-            payload: this.state.infiniteData
-          })
-        )
-        .catch(err => {
-          console.log(err);
-          dispatch({
-            type: "ERROR",
-            payload: "Error retrieving info."
-          });
-        });
-    }
+      dispatch({
+        type: "SET_URL",
+        payload: this.state.data
+      });
+    }, 500);
   };
 
   render() {
-    let user_data = "";
-    if (this.state.data && this.state.display_data) {
-      user_data = <Details data={this.state.data} />;
-    }
     return (
       <Consumer>
         {value => {
-          this.getUserData.bind(this, value.dispatch);
-          this.loadMore.bind(this, value.dispatch);
+          let user_data = "";
+          if (value.url && this.state.display_data) {
+            user_data = <InfiniteScroller data={this.state.data} />;
+          }
+
           if (value.info !== null) {
             return (
-              <div className="user-profile">
+              <div className="user-profile ">
                 <div className="user-profile-grid">
                   <div className="user-img">
                     <img
@@ -120,12 +63,11 @@ class UserDisplay extends React.Component {
                     <ul>
                       <li
                         className="user-following"
-                        onClick={e =>
-                          this.getUserData(
-                            value.dispatch,
-                            e,
+                        onClick={event =>
+                          this.getURL(
+                            event,
                             `${value.info.url}/following`,
-                            "FOLLOWING"
+                            value.dispatch
                           )
                         }
                       >
@@ -134,12 +76,11 @@ class UserDisplay extends React.Component {
                       </li>
                       <li
                         className="user-followers"
-                        onClick={e =>
-                          this.getUserData(
-                            value.dispatch,
-                            e,
+                        onClick={event =>
+                          this.getURL(
+                            event,
                             `${value.info.url}/followers`,
-                            "FOLLOWERS"
+                            value.dispatch
                           )
                         }
                       >
@@ -148,12 +89,11 @@ class UserDisplay extends React.Component {
                       </li>
                       <li
                         className="user-repos"
-                        onClick={e =>
-                          this.getUserData(
-                            value.dispatch,
-                            e,
+                        onClick={event =>
+                          this.getURL(
+                            event,
                             `${value.info.url}/repos`,
-                            "PUBLIC_REPOS"
+                            value.dispatch
                           )
                         }
                       >
@@ -170,29 +110,7 @@ class UserDisplay extends React.Component {
                       </li>
                     </ul>
                   </div>
-                  {user_data ? (
-                    // <InfiniteScroller
-                    //   infiniteData={this.state.infiniteData}
-                    //   hasMore={this.state.hasMore}
-                    //   loadMore={this.loadMore(value.dispatch)}
-                    //   user_data={user_data}
-                    // />
-                    <InfiniteScroll
-                      // dataLength={value.info[dataLength]}
-                      dataLength={this.state.infiniteData.length}
-                      next={this.loadMore(value.dispatch)}
-                      hasMore={this.state.hasMore}
-                      loader={
-                        <div>
-                          <Loading />
-                        </div>
-                      }
-                    >
-                      {user_data}
-                    </InfiniteScroll>
-                  ) : (
-                    ""
-                  )}
+                  {user_data}
                 </div>
               </div>
             );

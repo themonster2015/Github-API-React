@@ -18,6 +18,10 @@ class Search extends Component {
           type: "SEARCH_USER",
           payload: res.data
         });
+        dispatch({
+          type: "SET_URL",
+          payload: ""
+        });
       })
       .catch(err => {
         console.log(err);

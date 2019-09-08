@@ -31,6 +31,12 @@ const reducer = (state, action) => {
         public_repos: action.payload
         // public_repos: [...(state.public_repos || []), ...(action.payload || [])]
       };
+    case "SET_URL":
+      return {
+        ...state,
+        url: action.payload
+        // public_repos: [...(state.public_repos || []), ...(action.payload || [])]
+      };
     case "ERROR":
       return {
         ...state,
@@ -49,6 +55,7 @@ export class Provider extends React.Component {
     public_repos: [],
     following: [],
     followers: [],
+    url: "",
     dispatch: action => this.setState(state => reducer(state, action))
   };
   componentDidMount() {
